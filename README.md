@@ -11,7 +11,7 @@ dotnet add package EdgeLordKirito.ExtendedDate --version 1.0.0
 ````
 
 # Releases
-Releases are in the Release Folder  
+Releases are in the [Release Folder](https://github.com/EdgeLordKirito/ExtendedDateOnly/tree/master/Releases)
 # Documentation & Usage example
 
 - [Project Wiki](https://github.com/EdgeLordKirito/ExtendedDateOnly/wiki)
