@@ -9,6 +9,9 @@ ExtendedDate is a Library that provides currently a Single Class that represents
 ````
 dotnet add package EdgeLordKirito.ExtendedDate --version 1.0.0
 ````
+
+# Releases
+Releases are in the Release Folder  
 # Documentation & Usage example
 
 - [Project Wiki](https://github.com/EdgeLordKirito/ExtendedDateOnly/wiki)
