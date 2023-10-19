@@ -9,9 +9,7 @@
     <PackageTags>Time; BCE Time; DateOnly, </PackageTags>
     <PackageId>EdgeLordKirito.ExtendedDate</PackageId>
     <Title>ExtendedDate</Title>
-    <Description>A Libary that provides an Extended version of the DateOnly Struct in form of the ExtendedDateOnly Class
-ExtendedDateOnly can be used to modell Dates that up to int.MinValue and int.Maxvalue. 
-The Class supports Calendar Systems that consider Zero a valid Year.</Description>
+    <Description>A Libary that provides an Extended version of the DateOnly and DateTime Struct </Description>
     <PackageProjectUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</RepositoryUrl>
     <Product>ExtendedDate</Product>
@@ -21,6 +19,7 @@ The Class supports Calendar Systems that consider Zero a valid Year.</Descriptio
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryType>git</RepositoryType>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
