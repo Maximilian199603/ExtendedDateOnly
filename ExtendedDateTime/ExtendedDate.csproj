@@ -6,12 +6,39 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>EdgeLordKirito,</Authors>
-    <PackageTags>Time; BCE Time; </PackageTags>
+    <PackageTags>Time; BCE Time; DateOnly, </PackageTags>
     <PackageId>EdgeLordKirito.ExtendedDate</PackageId>
-    <Title>ExtendedDateOnly</Title>
+    <Title>ExtendedDate</Title>
     <Description>A Libary that provides an Extended version of the DateOnly Struct in form of the ExtendedDateOnly Class
 ExtendedDateOnly can be used to modell Dates that up to int.MinValue and int.Maxvalue. 
 The Class supports Calendar Systems that consider Zero a valid Year.</Description>
+    <PackageProjectUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</RepositoryUrl>
+    <Product>ExtendedDate</Product>
+    <Copyright>Copyright (c) EdgeLordKirito 2023</Copyright>
+    <PackageIcon>ExtendedDateIcon.jpg</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Krita Projects\Output\ExtendedDateIcon.jpg">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

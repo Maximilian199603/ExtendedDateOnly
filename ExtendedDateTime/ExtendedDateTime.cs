@@ -1,19 +1,19 @@
-﻿namespace ExtendedDate; // Find better name for Libary 
+﻿namespace ExtendedDate;
 
 /// <summary>
-/// Class <c>ExtendedDateOnly</c> Models A DateOnly Object that has extended reach to Int.MinValue and Int.MaxValue. 
+/// Class <c>ExtendedDateTime</c> Models A DateTime Object that has extended reach to Int.MinValue and Int.MaxValue. 
 /// It allows for Year Modelling with Year Zero and Without it.
 /// </summary>
-public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<ExtendedDateOnly>
+public class ExtendedDateTime
 {
     //Constants
-    public static readonly ExtendedDateOnly MaxValue = new ExtendedDateOnly(31, 12, int.MaxValue);
-    public static readonly ExtendedDateOnly MinValue = new ExtendedDateOnly(1, 1, int.MaxValue);
-    private static readonly DateOnly _defaultDate = new DateOnly(5000, 1, 1);
+    public static readonly ExtendedDateTime MaxValue = new ExtendedDateTime(31, 12, int.MaxValue,23,59,59);
+    public static readonly ExtendedDateTime MinValue = new ExtendedDateTime(1, 1, int.MaxValue,0,0,0);
+    private static readonly DateTime _defaultDateTime = new DateTime(5000, 1, 1);
 
     //Members
-    private DateOnly _monthDay = new DateOnly(_defaultDate.Year, 1, 1);
-    private bool _isZerolegal = false;
+    private DateTime _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
+    private readonly bool _IsZerolegal = false;
 
     //Properties
     public int Year { get; private set; }
@@ -22,7 +22,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     {
         get
         {
-            return _monthDay.Month;
+            return _DateTime.Month;
         }
     }
 
@@ -30,7 +30,31 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     {
         get
         {
-            return _monthDay.Day;
+            return _DateTime.Day;
+        }
+    }
+
+    public int Hour
+    {
+        get
+        {
+            return _DateTime.Hour;
+        }
+    }
+
+    public int Minute
+    {
+        get
+        {
+            return _DateTime.Minute;
+        }
+    }
+
+    public int Second
+    {
+        get
+        {
+            return _DateTime.Second;
         }
     }
 
@@ -61,7 +85,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     {
         get
         {
-            switch (_monthDay.Month)
+            switch (_DateTime.Month)
             {
                 case 1:
                     return MonthNames.January;
@@ -93,9 +117,9 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     }
 
     //Constructor
-    public ExtendedDateOnly(int year)
+    public ExtendedDateTime(int year)
     {
-        _isZerolegal = false;
+        _IsZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
             throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
@@ -106,12 +130,12 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             tempYear = 1;
         }
         Year = tempYear;
-        _monthDay = new DateOnly(_defaultDate.Year, 1, 1);
+        _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
     }
 
-    public ExtendedDateOnly(int day, int month, int year)
+    public ExtendedDateTime(int day, int month, int year)
     {
-        _isZerolegal = false;
+        _IsZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
             throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
@@ -132,28 +156,70 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             tempYear = 1;
         }
         Year = tempYear;
-        _monthDay = new DateOnly(_defaultDate.Year, month, day);
+        _DateTime = new DateTime(_defaultDateTime.Year, month, day);
     }
 
-    public ExtendedDateOnly(int year, bool isZeroLegal)
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second)
     {
-        _isZerolegal = isZeroLegal;
+        _IsZerolegal = false;
+        if (!(year >= int.MinValue && year <= int.MaxValue))
+        {
+            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+        }
+
+        if (!(month >= 1 && month <= 12))
+        {
+            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+        }
+
+        if (!(day >= 1 && day <= 31))
+        {
+            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+        }
+
+        if (!(hour >= 0 && hour <= 23))
+        {
+            throw new ArgumentOutOfRangeException("Value Hour is out of Range 0 - 23");
+        }
+
+        if (!(minute >= 0 && minute <= 59))
+        {
+            throw new ArgumentOutOfRangeException("Value Minute is out of Range 0 - 59");
+        }
+
+        if (!(second >= 0 && second <= 59))
+        {
+            throw new ArgumentOutOfRangeException("Value Second is out of Range 0 - 59");
+        }
+
+        int tempYear = year;
+        if (year == 0)
+        {
+            tempYear = 1;
+        }
+        Year = tempYear;
+        _DateTime = new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
+    }
+
+    public ExtendedDateTime(int year, bool isZeroLegal)
+    {
+        _IsZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
             throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
         }
         int tempYear = year;
-        if (!_isZerolegal && year == 0)
+        if (!_IsZerolegal && year == 0)
         {
             tempYear = 1;
         }
         Year = tempYear;
-        _monthDay = new DateOnly(_defaultDate.Year, 1, 1);
+        _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
     }
 
-    public ExtendedDateOnly(int day, int month, int year, bool isZeroLegal)
+    public ExtendedDateTime(int day, int month, int year, bool isZeroLegal)
     {
-        _isZerolegal = isZeroLegal;
+        _IsZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
             throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
@@ -169,12 +235,54 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
         }
         int tempYear = year;
-        if (!_isZerolegal && year == 0)
+        if (!_IsZerolegal && year == 0)
         {
             tempYear = 1;
         }
         Year = tempYear;
-        _monthDay = new DateOnly(_defaultDate.Year, month, day);
+        _DateTime = new DateTime(_defaultDateTime.Year, month, day);
+    }
+
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second, bool isZeroLegal)
+    {
+        _IsZerolegal = isZeroLegal;
+        if (!(year >= int.MinValue && year <= int.MaxValue))
+        {
+            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+        }
+
+        if (!(month >= 1 && month <= 12))
+        {
+            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+        }
+
+        if (!(day >= 1 && day <= 31))
+        {
+            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+        }
+
+        if (!(hour >= 0 && hour <= 23))
+        {
+            throw new ArgumentOutOfRangeException("Value Hour is out of Range 0 - 23");
+        }
+
+        if (!(minute >= 0 && minute <= 59))
+        {
+            throw new ArgumentOutOfRangeException("Value Minute is out of Range 0 - 59");
+        }
+
+        if (!(second >= 0 && second <= 59))
+        {
+            throw new ArgumentOutOfRangeException("Value Second is out of Range 0 - 59");
+        }
+
+        int tempYear = year;
+        if (!_IsZerolegal && year == 0)
+        {
+            tempYear = 1;
+        }
+        Year = tempYear;
+        _DateTime = new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
     }
 
     //Method
@@ -185,7 +293,6 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <param name="days"></param>
     public void AddDays(int days)
     {
-        //Skips the Year Zero
         Add(days, TimeUnits.Day);
     }
 
@@ -195,7 +302,6 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <param name="months"></param>
     public void AddMonths(int months)
     {
-        //Skips the Year Zero
         Add(months, TimeUnits.Month);
     }
 
@@ -205,8 +311,34 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <param name="years"></param>
     public void AddYears(int years)
     {
-        //Skips the Year Zero
         Add(years, TimeUnits.Year);
+    }
+
+    /// <summary>
+    /// Adds the specified Amount of Hours to this Instance
+    /// </summary>
+    /// <param name="hours"></param>
+    public void AddHours(int hours)
+    {
+        Add(hours, TimeUnits.Hour);
+    }
+
+    /// <summary>
+    /// Adds the specified Amount of Minutes to this Instance
+    /// </summary>
+    /// <param name="minutes"></param>
+    public void AddMinutes(int minutes)
+    {
+        Add(minutes, TimeUnits.Minute);
+    }
+
+    /// <summary>
+    /// Adds the specified Amount of Seconds to this Instance
+    /// </summary>
+    /// <param name="seconds"></param>
+    public void AddSeconds(int seconds)
+    {
+        Add(seconds, TimeUnits.Second);
     }
 
     /// <summary>
@@ -226,28 +358,52 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <param name="identifier"></param>
     private void Add(int val, TimeUnits identifier)
     {
-        TimeUnits[] allowedOperations = { TimeUnits.Day, TimeUnits.Month, TimeUnits.Year };
+        TimeUnits[] allowedOperations = { TimeUnits.Day, TimeUnits.Month, TimeUnits.Year, TimeUnits.Hour, TimeUnits.Minute, TimeUnits.Second };
         if (!allowedOperations.Contains(identifier))
         {
             return;
         }
-        DateOnly tempDate = new DateOnly();
+        DateTime tempDate = new DateTime();
         bool matched = false;
         if (identifier is TimeUnits.Day && !matched)
         {
-            tempDate = _monthDay.AddDays(val);
+            tempDate = _DateTime.AddDays(val);
             matched = true;
         }
 
         if (identifier is TimeUnits.Month && !matched)
         {
-            tempDate = _monthDay.AddMonths(val);
+            tempDate = _DateTime.AddMonths(val);
             matched = true;
         }
 
         if (identifier is TimeUnits.Year && !matched)
         {
-            tempDate = _monthDay.AddYears(val);
+            tempDate = _DateTime.AddYears(val);
+            matched = true;
+        }
+
+        if (identifier is TimeUnits.Hour && !matched)
+        {
+            tempDate = _DateTime.AddHours(val);
+            matched = true;
+        }
+
+        if (identifier is TimeUnits.Minute && !matched)
+        {
+            tempDate = _DateTime.AddMinutes(val);
+            matched = true;
+        }
+
+        if (identifier is TimeUnits.Second && !matched)
+        {
+            tempDate = _DateTime.AddSeconds(val);
+            matched = true;
+        }
+
+        if (identifier is TimeUnits.Millisecond && !matched)
+        {
+            tempDate = _DateTime.AddMilliseconds(val);
             matched = true;
         }
 
@@ -255,8 +411,11 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         int year = tempDate.Year;
         int month = tempDate.Month;
         int day = tempDate.Day;
+        int hour = tempDate.Hour;
+        int minute = tempDate.Minute;
+        int second = tempDate.Second;
         deviance = ManageDeviance(year);
-        _monthDay = ResetInteralYear(day, month);
+        _DateTime = ResetInteralYear(day, month, hour, minute, second);
         Year += deviance;
     }
 
@@ -269,7 +428,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     private int ManageDeviance(int year)
     {
         int deviance = CalculateYearDeviance(year);
-        if (_isZerolegal)
+        if (_IsZerolegal)
         {
             return deviance;
         }
@@ -285,7 +444,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <returns>The changed deviance if it is needed by the situation</returns>
     private int IncreaseDevianceIfCrossing(int deviance)
     {
-        if (_isZerolegal)
+        if (_IsZerolegal)
         {
             return deviance;
         }
@@ -336,7 +495,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <returns>The difference between year and defaultDate.year</returns>
     private int CalculateYearDeviance(int year)
     {
-        return year - _defaultDate.Year;
+        return year - _defaultDateTime.Year;
     }
 
     /// <summary>
@@ -345,14 +504,15 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     /// <param name="day"></param>
     /// <param name="month"></param>
     /// <returns>A new DateOnly Struct with _defaultDate.year, month and day as values</returns>
-    private DateOnly ResetInteralYear(int day, int month)
+    private DateTime ResetInteralYear(int day, int month, int hour, int minute, int second)
     {
-        return new DateOnly(_defaultDate.Year, month, day);
+        return new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
     }
 
+    //Needs support for the new Properties
     public override string ToString()
     {
-        return $"Day: {Day} | Month: {Month} | Monthname: {NameOfMonth} | Year: {Year} | Era: {Era}";
+        return $"Day: {Day} | Month: {Month} | Year: {Year} | Hour: {Hour} | Minute: {Minute} |Second: {Second} |Era: {Era} | Monthname: {NameOfMonth}";
     }
 
     public override bool Equals(object? obj)
@@ -363,19 +523,19 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         }
         else
         {
-            return Equals((ExtendedDateOnly)obj);
+            return Equals((ExtendedDateTime)obj);
         }
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_monthDay, _isZerolegal, Year, Month, Day, Era, NameOfMonth);
+        return HashCode.Combine(_DateTime, _IsZerolegal, Year, Month, Day, Era, NameOfMonth);
     }
 
 
     //Interface Methods
 
-    public int CompareTo(ExtendedDateOnly? other)
+    public int CompareTo(ExtendedDateTime? other)
     {
         if (other == null)
         {
@@ -395,18 +555,18 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return 0;
     }
 
-    public bool Equals(ExtendedDateOnly? other)
+    public bool Equals(ExtendedDateTime? other)
     {
         if (other is null)
         {
             return false;
         }
 
-        return this.Year.Equals(other.Year) && this.Month.Equals(other.Month) && this.Day.Equals(other.Day) && this.Era.Equals(other.Era);
+        return this.Year.Equals(other.Year) && this._DateTime.Equals(other._DateTime);
     }
 
     //Operators
-    public static bool operator <(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator <(ExtendedDateTime a, ExtendedDateTime b)
     {
         if (a.Year == b.Year)
         {
@@ -418,7 +578,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             {
                 return false;
             }
-            else
+            else if (a.Month == b.Month)
             {
                 if (a.Day < b.Day)
                 {
@@ -428,9 +588,42 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
                 {
                     return false;
                 }
-                else
+                else if (a.Day == b.Day)
                 {
-                    return false;
+                    if (a.Hour < b.Hour)
+                    {
+                        return true;
+                    }
+                    else if (a.Hour > b.Hour)
+                    {
+                        return false;
+                    }
+                    else if (a.Hour == b.Hour)
+                    {
+                        if (a.Minute < b.Minute)
+                        {
+                            return true;
+                        }
+                        else if (a.Minute > b.Minute)
+                        {
+                            return false;
+                        }
+                        else if (a.Minute == b.Minute)
+                        {
+                            if (a.Second < b.Second)
+                            {
+                                return true;
+                            }
+                            else if (a.Second > b.Second)
+                            {
+                                return false;
+                            }
+                            else if (a.Second == b.Second)
+                            {
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -443,7 +636,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return false;
     }
 
-    public static bool operator >(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator >(ExtendedDateTime a, ExtendedDateTime b)
     {
         if (a.Year == b.Year)
         {
@@ -465,9 +658,42 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
                 {
                     return false;
                 }
-                else
+                else if (a.Day == b.Day)
                 {
-                    return false;
+                    if (a.Hour > b.Hour)
+                    {
+                        return true;
+                    }
+                    else if (a.Hour < b.Hour)
+                    {
+                        return false;
+                    }
+                    else if (a.Hour == b.Hour)
+                    {
+                        if (a.Minute > b.Minute)
+                        {
+                            return true;
+                        }
+                        else if (a.Minute < b.Minute)
+                        {
+                            return false;
+                        }
+                        else if (a.Minute == b.Minute)
+                        {
+                            if (a.Second > b.Second)
+                            {
+                                return true;
+                            }
+                            else if (a.Second < b.Second)
+                            {
+                                return false;
+                            }
+                            else if (a.Second == b.Second)
+                            {
+                                return false;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -480,7 +706,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return false;
     }
 
-    public static bool operator >=(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator >=(ExtendedDateTime a, ExtendedDateTime b)
     {
         if (a.Equals(b))
         {
@@ -489,7 +715,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return a > b;
     }
 
-    public static bool operator <=(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator <=(ExtendedDateTime a, ExtendedDateTime b)
     {
         if (a.Equals(b))
         {

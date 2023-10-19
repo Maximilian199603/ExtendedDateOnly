@@ -2,9 +2,9 @@ using ExtendedDate;
 
 namespace ExtendedTimeUnitTest;
 
-//Passed All tests on 17.10.2023 15:59
+//Passed All tests on 19.10.2023 17:12
 
-public class ExtendedDateUnitTests
+public class ExtendedDateOnlyUnitTests
 {
     private ExtendedDateOnly pos;
 
