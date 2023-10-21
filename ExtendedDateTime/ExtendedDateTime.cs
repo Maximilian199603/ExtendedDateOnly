@@ -122,7 +122,7 @@ public class ExtendedDateTime
         _IsZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
         int tempYear = year;
         if (year == 0)
@@ -138,18 +138,19 @@ public class ExtendedDateTime
         _IsZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
+
         int tempYear = year;
         if (year == 0)
         {
@@ -164,32 +165,32 @@ public class ExtendedDateTime
         _IsZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
 
         if (!(hour >= 0 && hour <= 23))
         {
-            throw new ArgumentOutOfRangeException("Value Hour is out of Range 0 - 23");
+            throw new ArgumentOutOfRangeException(nameof(hour));
         }
 
         if (!(minute >= 0 && minute <= 59))
         {
-            throw new ArgumentOutOfRangeException("Value Minute is out of Range 0 - 59");
+            throw new ArgumentOutOfRangeException(nameof(minute));
         }
 
         if (!(second >= 0 && second <= 59))
         {
-            throw new ArgumentOutOfRangeException("Value Second is out of Range 0 - 59");
+            throw new ArgumentOutOfRangeException(nameof(second));
         }
 
         int tempYear = year;
@@ -206,8 +207,9 @@ public class ExtendedDateTime
         _IsZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
+
         int tempYear = year;
         if (!_IsZerolegal && year == 0)
         {
@@ -222,18 +224,19 @@ public class ExtendedDateTime
         _IsZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
+
         int tempYear = year;
         if (!_IsZerolegal && year == 0)
         {
@@ -248,32 +251,32 @@ public class ExtendedDateTime
         _IsZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
 
         if (!(hour >= 0 && hour <= 23))
         {
-            throw new ArgumentOutOfRangeException("Value Hour is out of Range 0 - 23");
+            throw new ArgumentOutOfRangeException(nameof(hour));
         }
 
         if (!(minute >= 0 && minute <= 59))
         {
-            throw new ArgumentOutOfRangeException("Value Minute is out of Range 0 - 59");
+            throw new ArgumentOutOfRangeException(nameof(minute));
         }
 
         if (!(second >= 0 && second <= 59))
         {
-            throw new ArgumentOutOfRangeException("Value Second is out of Range 0 - 59");
+            throw new ArgumentOutOfRangeException(nameof(second));
         }
 
         int tempYear = year;
@@ -509,7 +512,6 @@ public class ExtendedDateTime
         return new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
     }
 
-    //Needs support for the new Properties
     public override string ToString()
     {
         return $"Day: {Day} | Month: {Month} | Year: {Year} | Hour: {Hour} | Minute: {Minute} |Second: {Second} |Era: {Era} | Monthname: {NameOfMonth}";
@@ -527,34 +529,6 @@ public class ExtendedDateTime
         }
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(_DateTime, _IsZerolegal, Year, Month, Day, Era, NameOfMonth);
-    }
-
-
-    //Interface Methods
-
-    public int CompareTo(ExtendedDateTime? other)
-    {
-        if (other == null)
-        {
-            return 1;
-        }
-
-        if (this < other)
-        {
-            return -1;
-        }
-
-        if (this > other)
-        {
-            return 1;
-        }
-        //Equality Case
-        return 0;
-    }
-
     public bool Equals(ExtendedDateTime? other)
     {
         if (other is null)
@@ -565,162 +539,177 @@ public class ExtendedDateTime
         return this.Year.Equals(other.Year) && this._DateTime.Equals(other._DateTime);
     }
 
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(_DateTime, _IsZerolegal, Year, Month, Day, Era, NameOfMonth);
+    }
+
+    public int CompareTo(ExtendedDateTime? other)
+    {
+        if (other == null)
+        {
+            return 1;
+        }
+
+        if (Equals(other))
+        {
+            return 0;
+        }
+
+        int yearComparison = CompareYear(other);
+        int monthComparison = CompareMonth(other);
+        int dayComparison = CompareDay(other);
+        int hourComparison = CompareHour(other);
+        int minuteComparison = CompareMinute(other);
+        int secondComparison = CompareSecond(other);
+
+        if (yearComparison != 0)
+        {
+            return yearComparison;
+        }
+
+        if (monthComparison != 0)
+        {
+            return monthComparison;
+        }
+
+        if (dayComparison != 0)
+        {
+            return dayComparison;
+        }
+
+        if (hourComparison != 0)
+        {
+            return hourComparison;
+        }
+
+        if (minuteComparison != 0)
+        {
+            return minuteComparison;
+        }
+
+        if (secondComparison != 0)
+        {
+            return secondComparison;
+        }
+
+        return 0;
+    }
+
+    private int CompareYear(ExtendedDateTime other)
+    {
+        if (Year == other.Year)
+        {
+            return 0;
+        }
+        else if (Year < other.Year)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareMonth(ExtendedDateTime other)
+    {
+        if (Month == other.Month)
+        {
+            return 0;
+        }
+        else if (Month < other.Month)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareDay(ExtendedDateTime other)
+    {
+        if (Day == other.Day)
+        {
+            return 0;
+        }
+        else if (Day < other.Day)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareHour(ExtendedDateTime other)
+    {
+        if (Hour == other.Hour)
+        {
+            return 0;
+        }
+        else if (Hour < other.Hour)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareMinute(ExtendedDateTime other)
+    {
+        if (Minute == other.Minute)
+        {
+            return 0;
+        }
+        else if (Minute < other.Minute)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareSecond(ExtendedDateTime other)
+    {
+        if (Second == other.Second)
+        {
+            return 0;
+        }
+        else if (Second < other.Second)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
     //Operators
-    public static bool operator <(ExtendedDateTime a, ExtendedDateTime b)
+    public static bool operator <(ExtendedDateTime left, ExtendedDateTime right)
     {
-        if (a.Year == b.Year)
-        {
-            if (a.Month < b.Month)
-            {
-                return true;
-            }
-            else if (a.Month > b.Month)
-            {
-                return false;
-            }
-            else if (a.Month == b.Month)
-            {
-                if (a.Day < b.Day)
-                {
-                    return true;
-                }
-                else if (a.Day > b.Day)
-                {
-                    return false;
-                }
-                else if (a.Day == b.Day)
-                {
-                    if (a.Hour < b.Hour)
-                    {
-                        return true;
-                    }
-                    else if (a.Hour > b.Hour)
-                    {
-                        return false;
-                    }
-                    else if (a.Hour == b.Hour)
-                    {
-                        if (a.Minute < b.Minute)
-                        {
-                            return true;
-                        }
-                        else if (a.Minute > b.Minute)
-                        {
-                            return false;
-                        }
-                        else if (a.Minute == b.Minute)
-                        {
-                            if (a.Second < b.Second)
-                            {
-                                return true;
-                            }
-                            else if (a.Second > b.Second)
-                            {
-                                return false;
-                            }
-                            else if (a.Second == b.Second)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (a.Year < b.Year)
-        {
-            return true;
-        }
-
-        return false;
+        return left.CompareTo(right) < 0;
     }
 
-    public static bool operator >(ExtendedDateTime a, ExtendedDateTime b)
+    public static bool operator <=(ExtendedDateTime left, ExtendedDateTime right)
     {
-        if (a.Year == b.Year)
-        {
-            if (a.Month > b.Month)
-            {
-                return true;
-            }
-            else if (a.Month < b.Month)
-            {
-                return false;
-            }
-            else
-            {
-                if (a.Day > b.Day)
-                {
-                    return true;
-                }
-                else if (a.Day < b.Day)
-                {
-                    return false;
-                }
-                else if (a.Day == b.Day)
-                {
-                    if (a.Hour > b.Hour)
-                    {
-                        return true;
-                    }
-                    else if (a.Hour < b.Hour)
-                    {
-                        return false;
-                    }
-                    else if (a.Hour == b.Hour)
-                    {
-                        if (a.Minute > b.Minute)
-                        {
-                            return true;
-                        }
-                        else if (a.Minute < b.Minute)
-                        {
-                            return false;
-                        }
-                        else if (a.Minute == b.Minute)
-                        {
-                            if (a.Second > b.Second)
-                            {
-                                return true;
-                            }
-                            else if (a.Second < b.Second)
-                            {
-                                return false;
-                            }
-                            else if (a.Second == b.Second)
-                            {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (a.Year > b.Year)
-        {
-            return true;
-        }
-
-        return false;
+        return left.CompareTo(right) <= 0;
     }
 
-    public static bool operator >=(ExtendedDateTime a, ExtendedDateTime b)
+    public static bool operator >(ExtendedDateTime left, ExtendedDateTime right)
     {
-        if (a.Equals(b))
-        {
-            return true;
-        }
-        return a > b;
+        return left.CompareTo(right) > 0;
     }
 
-    public static bool operator <=(ExtendedDateTime a, ExtendedDateTime b)
+    public static bool operator >=(ExtendedDateTime left, ExtendedDateTime right)
     {
-        if (a.Equals(b))
-        {
-            return true;
-        }
-        return a < b;
+        return left.CompareTo(right) >= 0;
     }
 }

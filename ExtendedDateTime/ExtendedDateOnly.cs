@@ -1,4 +1,6 @@
-﻿namespace ExtendedDate; // Find better name for Libary 
+﻿using System;
+
+namespace ExtendedDate;
 
 /// <summary>
 /// Class <c>ExtendedDateOnly</c> Models A DateOnly Object that has extended reach to Int.MinValue and Int.MaxValue. 
@@ -98,8 +100,9 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         _isZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
+
         int tempYear = year;
         if (year == 0)
         {
@@ -114,18 +117,19 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         _isZerolegal = false;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
+
         int tempYear = year;
         if (year == 0)
         {
@@ -140,8 +144,9 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         _isZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
+
         int tempYear = year;
         if (!_isZerolegal && year == 0)
         {
@@ -156,18 +161,19 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         _isZerolegal = isZeroLegal;
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
-            throw new ArgumentOutOfRangeException($"Value Year is out of Range {int.MinValue} - {int.MaxValue}");
+            throw new ArgumentOutOfRangeException(nameof(year));
         }
 
         if (!(month >= 1 && month <= 12))
         {
-            throw new ArgumentOutOfRangeException("Value Month is out of Range 1 - 12");
+            throw new ArgumentOutOfRangeException(nameof(month));
         }
 
         if (!(day >= 1 && day <= 31))
         {
-            throw new ArgumentOutOfRangeException("Value Day is out of Range 1 - 31");
+            throw new ArgumentOutOfRangeException(nameof(day));
         }
+
         int tempYear = year;
         if (!_isZerolegal && year == 0)
         {
@@ -367,6 +373,16 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         }
     }
 
+    public bool Equals(ExtendedDateOnly? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        return this.Year.Equals(other.Year) && this.Month.Equals(other.Month) && this.Day.Equals(other.Day) && this.Era.Equals(other.Era);
+    }
+
     public override int GetHashCode()
     {
         return HashCode.Combine(_monthDay, _isZerolegal, Year, Month, Day, Era, NameOfMonth);
@@ -382,119 +398,99 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             return 1;
         }
 
-        if (this < other)
+        if (Equals(other))
         {
-            return -1;
+            return 0;
         }
 
-        if (this > other)
+        int yearComparison = CompareYear(other);
+        int monthComparison = CompareMonth(other);
+        int dayComparison = CompareDay(other);
+
+        if (yearComparison != 0)
         {
-            return 1;
+            return yearComparison;
         }
-        //Equality Case
+
+        if (monthComparison != 0)
+        {
+            return monthComparison;
+        }
+
+        if (dayComparison != 0)
+        {
+            return dayComparison;
+        }
+
         return 0;
     }
 
-    public bool Equals(ExtendedDateOnly? other)
+    private int CompareYear(ExtendedDateOnly other)
     {
-        if (other is null)
+        if (Year == other.Year)
         {
-            return false;
+            return 0;
         }
+        else if (Year < other.Year)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
 
-        return this.Year.Equals(other.Year) && this.Month.Equals(other.Month) && this.Day.Equals(other.Day) && this.Era.Equals(other.Era);
+    private int CompareMonth(ExtendedDateOnly other)
+    {
+        if (Month == other.Month)
+        {
+            return 0;
+        }
+        else if (Month < other.Month)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+
+    private int CompareDay(ExtendedDateOnly other)
+    {
+        if (Day == other.Day)
+        {
+            return 0;
+        }
+        else if (Day < other.Day)
+        {
+            return -1;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     //Operators
-    public static bool operator <(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator <(ExtendedDateOnly left, ExtendedDateOnly right)
     {
-        if (a.Year == b.Year)
-        {
-            if (a.Month < b.Month)
-            {
-                return true;
-            }
-            else if (a.Month > b.Month)
-            {
-                return false;
-            }
-            else
-            {
-                if (a.Day < b.Day)
-                {
-                    return true;
-                }
-                else if (a.Day > b.Day)
-                {
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        if (a.Year < b.Year)
-        {
-            return true;
-        }
-
-        return false;
+        return left.CompareTo(right) < 0;
     }
 
-    public static bool operator >(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator <=(ExtendedDateOnly left, ExtendedDateOnly right)
     {
-        if (a.Year == b.Year)
-        {
-            if (a.Month > b.Month)
-            {
-                return true;
-            }
-            else if (a.Month < b.Month)
-            {
-                return false;
-            }
-            else
-            {
-                if (a.Day > b.Day)
-                {
-                    return true;
-                }
-                else if (a.Day < b.Day)
-                {
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
-        if (a.Year > b.Year)
-        {
-            return true;
-        }
-
-        return false;
+        return left.CompareTo(right) <= 0;
     }
 
-    public static bool operator >=(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator >(ExtendedDateOnly left, ExtendedDateOnly right)
     {
-        if (a.Equals(b))
-        {
-            return true;
-        }
-        return a > b;
+        return left.CompareTo(right) > 0;
     }
 
-    public static bool operator <=(ExtendedDateOnly a, ExtendedDateOnly b)
+    public static bool operator >=(ExtendedDateOnly left, ExtendedDateOnly right)
     {
-        if (a.Equals(b))
-        {
-            return true;
-        }
-        return a < b;
+        return left.CompareTo(right) >= 0;
     }
 }
