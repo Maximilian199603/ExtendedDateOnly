@@ -7,8 +7,8 @@
 public class ExtendedDateTime
 {
     //Constants
-    public static readonly ExtendedDateTime MaxValue = new ExtendedDateTime(31, 12, int.MaxValue,23,59,59);
-    public static readonly ExtendedDateTime MinValue = new ExtendedDateTime(1, 1, int.MaxValue,0,0,0);
+    private static readonly ExtendedDateTime _MaxValue = new ExtendedDateTime(31, 12, int.MaxValue,23,59,59);
+    private static readonly ExtendedDateTime _MinValue = new ExtendedDateTime(1, 1, int.MaxValue,0,0,0);
     private static readonly DateTime _defaultDateTime = new DateTime(5000, 1, 1);
 
     //Members
@@ -115,6 +115,10 @@ public class ExtendedDateTime
             return MonthNames.None;
         }
     }
+
+    public static ExtendedDateTime MaxValue => _MaxValue.Copy();
+
+    public static ExtendedDateTime MinValue => _MinValue.Copy();
 
     //Constructor
     public ExtendedDateTime(int year)
@@ -544,6 +548,11 @@ public class ExtendedDateTime
         return HashCode.Combine(_DateTime, _IsZerolegal, Year, Month, Day, Era, NameOfMonth);
     }
 
+    public ExtendedDateTime Copy()
+    {
+        return new ExtendedDateTime(Year,Month,Day,Hour,Minute,Second,_IsZerolegal);
+    }
+
     public int CompareTo(ExtendedDateTime? other)
     {
         if (other == null)
@@ -711,5 +720,21 @@ public class ExtendedDateTime
     public static bool operator >=(ExtendedDateTime left, ExtendedDateTime right)
     {
         return left.CompareTo(right) >= 0;
+    }
+
+    public static ExtendedTimeSpan operator -(ExtendedDateTime left, ExtendedDateTime right)
+    {
+        return null;
+    }
+
+    public static ExtendedDateTime operator +(ExtendedDateTime left, ExtendedDateTime right)
+    {
+        left.AddSeconds(right.Second);
+        left.AddMinutes(right.Minute);
+        left.AddHours(right.Hour);
+        left.AddDays(right.Day);
+        left.AddMonths(right.Month);
+        left.AddYears(right.Year);
+        return left.Copy();
     }
 }

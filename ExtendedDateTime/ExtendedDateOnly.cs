@@ -9,8 +9,8 @@ namespace ExtendedDate;
 public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<ExtendedDateOnly>
 {
     //Constants
-    public static readonly ExtendedDateOnly MaxValue = new ExtendedDateOnly(31, 12, int.MaxValue);
-    public static readonly ExtendedDateOnly MinValue = new ExtendedDateOnly(1, 1, int.MaxValue);
+    private static readonly ExtendedDateOnly _MaxValue = new ExtendedDateOnly(31, 12, int.MaxValue);
+    private static readonly ExtendedDateOnly _MinValue = new ExtendedDateOnly(1, 1, int.MaxValue);
     private static readonly DateOnly _defaultDate = new DateOnly(5000, 1, 1);
 
     //Members
@@ -93,6 +93,10 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
             return MonthNames.None;
         }
     }
+
+    public static ExtendedDateOnly MaxValue => _MaxValue.Copy();
+
+    public static ExtendedDateOnly MinValue => _MinValue.Copy();
 
     //Constructor
     public ExtendedDateOnly(int year)
@@ -388,7 +392,10 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return HashCode.Combine(_monthDay, _isZerolegal, Year, Month, Day, Era, NameOfMonth);
     }
 
-
+    public ExtendedDateOnly Copy()
+    {
+        return new ExtendedDateOnly(Year,Month,Day,_isZerolegal);
+    }
     //Interface Methods
 
     public int CompareTo(ExtendedDateOnly? other)
@@ -492,5 +499,26 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
     public static bool operator >=(ExtendedDateOnly left, ExtendedDateOnly right)
     {
         return left.CompareTo(right) >= 0;
+    }
+
+    public static ExtendedTimeSpan operator -(ExtendedDateOnly left, ExtendedDateOnly right)
+    {
+        if (left.Equals(right))
+        {
+            return ExtendedTimeSpan._Zero;
+        }
+
+        int yearDifference, monthDifference,DayDifference;
+
+
+        return null;
+    }
+
+    public static ExtendedDateOnly operator +(ExtendedDateOnly left, ExtendedDateOnly right)
+    {
+        left.AddDays(right.Day);
+        left.AddMonths(right.Month);
+        left.AddYears(right.Year);
+        return left.Copy();
     }
 }

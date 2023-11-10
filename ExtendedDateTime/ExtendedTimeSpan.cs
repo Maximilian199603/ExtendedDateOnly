@@ -14,11 +14,17 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
 
     public int Second { get; private set; }
 
-    public static readonly ExtendedTimeSpan Zero = new ExtendedTimeSpan(0, 0, 0, 0, 0, 0);
+    private static readonly ExtendedTimeSpan _Zero = new ExtendedTimeSpan(0, 0, 0, 0, 0, 0);
 
-    public static readonly ExtendedTimeSpan MaxValue = new ExtendedTimeSpan(int.MaxValue, 12, 31, 23, 59, 59);
+    private static readonly ExtendedTimeSpan _MaxValue = new ExtendedTimeSpan(int.MaxValue, 12, 31, 23, 59, 59);
 
-    public static readonly ExtendedTimeSpan MinValue = new ExtendedTimeSpan(int.MinValue, 1, 1, 0, 0, 0);
+    private static readonly ExtendedTimeSpan _MinValue = new ExtendedTimeSpan(int.MinValue, 1, 1, 0, 0, 0);
+
+    public static ExtendedTimeSpan Zero => _Zero.Copy();
+
+    public static ExtendedTimeSpan MaxValue => _MaxValue.Copy();
+
+    public static ExtendedTimeSpan MinValue => _MinValue.Copy();
 
     public ExtendedTimeSpan()
     {
@@ -243,6 +249,11 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
     public override int GetHashCode()
     {
         return HashCode.Combine(Year, Month, Day, Hour, Minute, Second);
+    }
+
+    public ExtendedTimeSpan Copy()
+    {
+        return new ExtendedTimeSpan(Year,Month,Day,Hour,Minute,Second); 
     }
 
     public static bool operator <(ExtendedTimeSpan left, ExtendedTimeSpan right)
