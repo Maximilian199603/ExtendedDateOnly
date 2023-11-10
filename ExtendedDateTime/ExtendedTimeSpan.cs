@@ -18,7 +18,7 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
 
     private static readonly ExtendedTimeSpan _MaxValue = new ExtendedTimeSpan(int.MaxValue, 12, 31, 23, 59, 59);
 
-    private static readonly ExtendedTimeSpan _MinValue = new ExtendedTimeSpan(int.MinValue, 1, 1, 0, 0, 0);
+    private static readonly ExtendedTimeSpan _MinValue = new ExtendedTimeSpan(int.MinValue, 0, 0, 0, 0, 0);
 
     public static ExtendedTimeSpan Zero => _Zero.Copy();
 
@@ -38,6 +38,7 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
 
     public ExtendedTimeSpan(int year, int month, int day, int hour, int minute, int second)
     {
+        /*
         if (!(year >= int.MinValue && year <= int.MaxValue))
         {
             throw new ArgumentOutOfRangeException(nameof(year));
@@ -67,6 +68,7 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
         {
             throw new ArgumentOutOfRangeException(nameof(second));
         }
+        */
 
         Year = year;
         Month = month;
@@ -74,6 +76,33 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
         Hour = hour;
         Minute = minute;
         Second = second;
+    }
+
+    public ExtendedTimeSpan(int year, int month, int day)
+    {
+        /*
+        if (!(year >= int.MinValue && year <= int.MaxValue))
+        {
+            throw new ArgumentOutOfRangeException(nameof(year));
+        }
+
+        if (!(month >= 1 && month <= 12))
+        {
+            throw new ArgumentOutOfRangeException(nameof(month));
+        }
+
+        if (!(day >= 1 && day <= 31))
+        {
+            throw new ArgumentOutOfRangeException(nameof(day));
+        }
+        */
+
+        Year = year;
+        Month = month;
+        Day = day;
+        Hour = 0;
+        Minute = 0;
+        Second = 0;
     }
 
     public override bool Equals(object? obj)
@@ -274,5 +303,34 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
     public static bool operator >=(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
         return left.CompareTo(right) >= 0;
+    }
+
+    public static ExtendedTimeSpan operator -(ExtendedTimeSpan left, ExtendedTimeSpan right)
+    {
+        int year, month, day,hour,minute,second;
+
+        year = left.Year - right.Year;
+        month = left.Month - right.Month;
+        day = left.Day - right.Day;
+        hour = left.Hour - right.Hour;
+        minute = left.Minute - right.Minute;
+        second = left.Second - right.Second;
+
+        return new ExtendedTimeSpan(year,month,day,hour,minute,second);
+
+    }
+
+    public static ExtendedTimeSpan operator +(ExtendedTimeSpan left, ExtendedTimeSpan right)
+    {
+        int year, month, day, hour, minute, second;
+
+        year = left.Year + right.Year;
+        month = left.Month + right.Month;
+        day = left.Day + right.Day;
+        hour = left.Hour + right.Hour;
+        minute = left.Minute + right.Minute;
+        second = left.Second + right.Second;
+
+        return new ExtendedTimeSpan(year, month, day, hour, minute, second);
     }
 }

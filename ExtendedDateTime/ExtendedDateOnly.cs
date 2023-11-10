@@ -360,6 +360,25 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
         return new DateOnly(_defaultDate.Year, month, day);
     }
 
+    public void Add(ExtendedDateOnly other)
+    {
+        AddDays(other.Day);
+        AddMonths(other.Month);
+        AddYears(other.Year);
+    }
+
+    public void Subtract(ExtendedDateOnly other)
+    {
+        AddDays(Negate(other.Day)); 
+        AddMonths(Negate(other.Month));
+        AddYears(Negate(other.Year));
+    }
+
+    private static int Negate(int val)
+    {
+        return val * -1;
+    }
+
     public override string ToString()
     {
         return $"Day: {Day} | Month: {Month} | Monthname: {NameOfMonth} | Year: {Year} | Era: {Era}";
@@ -394,7 +413,7 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
 
     public ExtendedDateOnly Copy()
     {
-        return new ExtendedDateOnly(Year,Month,Day,_isZerolegal);
+        return new ExtendedDateOnly(Day,Month,Year,_isZerolegal);
     }
     //Interface Methods
 
@@ -503,22 +522,11 @@ public class ExtendedDateOnly : IComparable<ExtendedDateOnly>, IEquatable<Extend
 
     public static ExtendedTimeSpan operator -(ExtendedDateOnly left, ExtendedDateOnly right)
     {
-        if (left.Equals(right))
-        {
-            return ExtendedTimeSpan._Zero;
-        }
+        int year, month,day;
 
-        int yearDifference, monthDifference,DayDifference;
-
-
-        return null;
-    }
-
-    public static ExtendedDateOnly operator +(ExtendedDateOnly left, ExtendedDateOnly right)
-    {
-        left.AddDays(right.Day);
-        left.AddMonths(right.Month);
-        left.AddYears(right.Year);
-        return left.Copy();
+        year = left.Year - right.Year;
+        month = left.Month - right.Month;
+        day = left.Day - right.Day;
+        return new ExtendedTimeSpan(year,month,day);
     }
 }

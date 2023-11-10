@@ -455,4 +455,11 @@ public class ExtendedDateTimeUnitTests
         tester.AddSeconds(1);
         Assert.That(tester, Is.EqualTo(comparison));
     }
+
+    [Test]
+    public void ExtendedDateTimeMinMaxTest()
+    {
+        Assert.That(ExtendedDateTime.MaxValue != ExtendedDateTime.MaxValue, Is.True);
+        Assert.That(ExtendedDateTime.MinValue != ExtendedDateTime.MinValue, Is.True);
+    }
 }

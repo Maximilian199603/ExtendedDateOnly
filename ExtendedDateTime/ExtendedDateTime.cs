@@ -1,4 +1,6 @@
-﻿namespace ExtendedDate;
+﻿using System.ComponentModel;
+
+namespace ExtendedDate;
 
 /// <summary>
 /// Class <c>ExtendedDateTime</c> Models A DateTime Object that has extended reach to Int.MinValue and Int.MaxValue. 
@@ -550,7 +552,42 @@ public class ExtendedDateTime
 
     public ExtendedDateTime Copy()
     {
-        return new ExtendedDateTime(Year,Month,Day,Hour,Minute,Second,_IsZerolegal);
+        return new ExtendedDateTime(Day,Month,Year,Hour,Minute,Second,_IsZerolegal);
+    }
+
+    public void Add(ExtendedDateTime other)
+    {
+        if (other == null)
+        {
+            throw new ArgumentNullException(nameof(other));
+        }
+
+        AddSeconds(other.Second);
+        AddMinutes(other.Minute);
+        AddHours(other.Hour);
+        AddDays(other.Day);
+        AddHours(other.Hour);
+        AddDays(other.Day);
+    }
+
+    public void Subtract(ExtendedDateTime other)
+    {
+        if (other == null)
+        {
+            throw new ArgumentNullException(nameof(other));
+        }
+
+        AddSeconds(Negate(other.Second));
+        AddMinutes(Negate(other.Minute));
+        AddHours(Negate(other.Hour));
+        AddDays(Negate(other.Day));
+        AddHours(Negate(other.Hour));
+        AddDays(Negate(other.Day));
+    }
+
+    private int Negate(int val)
+    {
+        return val * -1;
     }
 
     public int CompareTo(ExtendedDateTime? other)
@@ -724,17 +761,14 @@ public class ExtendedDateTime
 
     public static ExtendedTimeSpan operator -(ExtendedDateTime left, ExtendedDateTime right)
     {
-        return null;
-    }
+        int year, month, day, hour, minute, second;
 
-    public static ExtendedDateTime operator +(ExtendedDateTime left, ExtendedDateTime right)
-    {
-        left.AddSeconds(right.Second);
-        left.AddMinutes(right.Minute);
-        left.AddHours(right.Hour);
-        left.AddDays(right.Day);
-        left.AddMonths(right.Month);
-        left.AddYears(right.Year);
-        return left.Copy();
+        year = left.Year - right.Year;
+        month = left.Month - right.Month;
+        day = left.Day - right.Day;
+        hour = left.Hour - right.Hour;
+        minute = left.Minute - right.Minute;
+        second = left.Second - right.Second;
+        return new ExtendedTimeSpan(year, month, day, hour, minute, second);
     }
 }

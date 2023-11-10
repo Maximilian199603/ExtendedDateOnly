@@ -311,4 +311,11 @@ public class ExtendedDateOnlyUnitTests
         Assert.That(tester, Is.Not.EqualTo(comparison));
         Assert.That(comparison, Is.Not.EqualTo(tester));
     }
+
+    [Test]
+    public void ExtendedDateOnlyMinMaxTest()
+    {
+        Assert.That(ExtendedDateOnly.MaxValue != ExtendedDateOnly.MaxValue, Is.True);
+        Assert.That(ExtendedDateOnly.MinValue != ExtendedDateOnly.MinValue, Is.True);
+    }
 }
