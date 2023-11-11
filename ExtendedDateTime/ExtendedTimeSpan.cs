@@ -1,6 +1,9 @@
-﻿namespace ExtendedDate;
+﻿using System;
+using System.Text;
 
-public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<ExtendedTimeSpan>
+namespace ExtendedDate;
+
+public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEquatable<ExtendedTimeSpan>, ICloneable, ITime
 {
     public int Year { get; private set; }
 
@@ -13,6 +16,10 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
     public int Minute { get; private set; }
 
     public int Second { get; private set; }
+
+    public TimeEra Era => TimeEra.None;
+
+    public MonthNames NameOfMonth => MonthNames.None;
 
     private static readonly ExtendedTimeSpan _Zero = new ExtendedTimeSpan(0, 0, 0, 0, 0, 0);
 
@@ -36,70 +43,36 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
         Second = 0;
     }
 
-    public ExtendedTimeSpan(int year, int month, int day, int hour, int minute, int second)
+    public ExtendedTimeSpan(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute)
     {
-        /*
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
-
-        if (!(month >= 1 && month <= 12))
-        {
-            throw new ArgumentOutOfRangeException(nameof(month));
-        }
-
-        if (!(day >= 1 && day <= 31))
-        {
-            throw new ArgumentOutOfRangeException(nameof(day));
-        }
-
-        if (!(hour >= 0 && hour <= 23))
-        {
-            throw new ArgumentOutOfRangeException(nameof(hour));
-        }
-
-        if (!(minute >= 0 && minute <= 59))
-        {
-            throw new ArgumentOutOfRangeException(nameof(minute));
-        }
-
-        if (!(second >= 0 && second <= 59))
-        {
-            throw new ArgumentOutOfRangeException(nameof(second));
-        }
-        */
-
-        Year = year;
-        Month = month;
-        Day = day;
-        Hour = hour;
-        Minute = minute;
         Second = second;
     }
 
-    public ExtendedTimeSpan(int year, int month, int day)
+    public ExtendedTimeSpan(int year, int month, int day, int hour, int minute) : this(year, month, day, hour)
     {
-        /*
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
+        Minute = minute;
+    }
 
-        if (!(month >= 1 && month <= 12))
-        {
-            throw new ArgumentOutOfRangeException(nameof(month));
-        }
+    public ExtendedTimeSpan(int year, int month, int day, int hour) : this(year, month, day)
+    {
+        Hour = hour;
+    }
 
-        if (!(day >= 1 && day <= 31))
-        {
-            throw new ArgumentOutOfRangeException(nameof(day));
-        }
-        */
-
-        Year = year;
-        Month = month;
+    public ExtendedTimeSpan(int year, int month, int day) : this(year, month)
+    {
         Day = day;
+    }
+
+    public ExtendedTimeSpan(int year, int month) : this(year)
+    {
+        Month = month;
+    }
+
+    public ExtendedTimeSpan(int year)
+    {
+        Year = year;
+        Month = 0;
+        Day = 0;
         Hour = 0;
         Minute = 0;
         Second = 0;
@@ -277,12 +250,32 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Year, Month, Day, Hour, Minute, Second);
+        return HashCode.Combine(Year, Month, Day, Hour, Minute, Second, Era, NameOfMonth);
     }
 
     public ExtendedTimeSpan Copy()
     {
         return new ExtendedTimeSpan(Year,Month,Day,Hour,Minute,Second); 
+    }
+
+    public object Clone()
+    {
+        return Copy();
+    }
+
+    public int CompareTo(object? obj)
+    {
+        if (obj is not ExtendedTimeSpan)
+        {
+            throw new ArgumentException("Given Object is not of Type ExtendedDateOnly");
+        }
+
+        return CompareTo(obj as ExtendedTimeSpan);
+    }
+
+    public override string? ToString()
+    {
+        return $"Day: {Day} | Month: {Month} | Year: {Year} | Hour: {Hour} | Minute: {Minute} | Second: {Second}";
     }
 
     public static bool operator <(ExtendedTimeSpan left, ExtendedTimeSpan right)
@@ -307,30 +300,12 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IEquatable<Extend
 
     public static ExtendedTimeSpan operator -(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
-        int year, month, day,hour,minute,second;
-
-        year = left.Year - right.Year;
-        month = left.Month - right.Month;
-        day = left.Day - right.Day;
-        hour = left.Hour - right.Hour;
-        minute = left.Minute - right.Minute;
-        second = left.Second - right.Second;
-
-        return new ExtendedTimeSpan(year,month,day,hour,minute,second);
-
+        // cast is not redundant as it calls the more generic method that subtract values from another
+        return TimeSpanFactory.Create(left as ITime, right as ITime);
     }
 
     public static ExtendedTimeSpan operator +(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
-        int year, month, day, hour, minute, second;
-
-        year = left.Year + right.Year;
-        month = left.Month + right.Month;
-        day = left.Day + right.Day;
-        hour = left.Hour + right.Hour;
-        minute = left.Minute + right.Minute;
-        second = left.Second + right.Second;
-
-        return new ExtendedTimeSpan(year, month, day, hour, minute, second);
+        return TimeSpanFactory.Create(left,right);
     }
 }

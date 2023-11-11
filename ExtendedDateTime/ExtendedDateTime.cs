@@ -6,15 +6,15 @@ namespace ExtendedDate;
 /// Class <c>ExtendedDateTime</c> Models A DateTime Object that has extended reach to Int.MinValue and Int.MaxValue. 
 /// It allows for Year Modelling with Year Zero and Without it.
 /// </summary>
-public class ExtendedDateTime
+public class ExtendedDateTime : IComparable<ExtendedDateTime>, IComparable, IEquatable<ExtendedDateTime>, ICloneable, ITime
 {
     //Constants
     private static readonly ExtendedDateTime _MaxValue = new ExtendedDateTime(31, 12, int.MaxValue,23,59,59);
-    private static readonly ExtendedDateTime _MinValue = new ExtendedDateTime(1, 1, int.MaxValue,0,0,0);
-    private static readonly DateTime _defaultDateTime = new DateTime(5000, 1, 1);
+    private static readonly ExtendedDateTime _MinValue = new ExtendedDateTime(1, 1, int.MinValue,0,0,0);
+    private static readonly DateTime _DefaultDateTime = new DateTime(5000, 1, 1);
 
     //Members
-    private DateTime _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
+    private DateTime _DateTime = new DateTime(_DefaultDateTime.Year, 1, 1);
     private readonly bool _IsZerolegal = false;
 
     //Properties
@@ -79,7 +79,7 @@ public class ExtendedDateTime
                 return TimeEra.BeforeZero;
             }
             //Branches should catch before reaching
-            return TimeEra.NotInitialized;
+            return TimeEra.None;
         }
     }
 
@@ -123,89 +123,29 @@ public class ExtendedDateTime
     public static ExtendedDateTime MinValue => _MinValue.Copy();
 
     //Constructor
-    public ExtendedDateTime(int year)
+    public ExtendedDateTime(int year) : this(year, false)
     {
-        _IsZerolegal = false;
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
-        int tempYear = year;
-        if (year == 0)
-        {
-            tempYear = 1;
-        }
-        Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
     }
 
-    public ExtendedDateTime(int day, int month, int year)
+    public ExtendedDateTime(int month, int year) : this(month, year, false)
     {
-        _IsZerolegal = false;
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
-
-        if (!(month >= 1 && month <= 12))
-        {
-            throw new ArgumentOutOfRangeException(nameof(month));
-        }
-
-        if (!(day >= 1 && day <= 31))
-        {
-            throw new ArgumentOutOfRangeException(nameof(day));
-        }
-
-        int tempYear = year;
-        if (year == 0)
-        {
-            tempYear = 1;
-        }
-        Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, month, day);
     }
 
-    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second)
+    public ExtendedDateTime(int day, int month, int year) : this(day, month, year, false)
     {
-        _IsZerolegal = false;
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
+    }
 
-        if (!(month >= 1 && month <= 12))
-        {
-            throw new ArgumentOutOfRangeException(nameof(month));
-        }
+    public ExtendedDateTime(int day, int month, int year, int hour) : this(day, month, year, hour, false)
+    {
+    }
 
-        if (!(day >= 1 && day <= 31))
-        {
-            throw new ArgumentOutOfRangeException(nameof(day));
-        }
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute) : this(day, month, year, hour, minute, false)
+    {
 
-        if (!(hour >= 0 && hour <= 23))
-        {
-            throw new ArgumentOutOfRangeException(nameof(hour));
-        }
+    }
 
-        if (!(minute >= 0 && minute <= 59))
-        {
-            throw new ArgumentOutOfRangeException(nameof(minute));
-        }
-
-        if (!(second >= 0 && second <= 59))
-        {
-            throw new ArgumentOutOfRangeException(nameof(second));
-        }
-
-        int tempYear = year;
-        if (year == 0)
-        {
-            tempYear = 1;
-        }
-        Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second) : this(day, month , year, hour, minute, second, false)
+    {
     }
 
     public ExtendedDateTime(int year, bool isZeroLegal)
@@ -222,17 +162,16 @@ public class ExtendedDateTime
             tempYear = 1;
         }
         Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, 1, 1);
+        _DateTime = new DateTime(_DefaultDateTime.Year, 1, 1);
     }
 
-    public ExtendedDateTime(int day, int month, int year, bool isZeroLegal)
+    public ExtendedDateTime(int month, int year, bool isZeroLegal) : this(1, month, year, isZeroLegal)
     {
-        _IsZerolegal = isZeroLegal;
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
 
+    }
+
+    public ExtendedDateTime(int day, int month, int year, bool isZeroLegal) : this(year, isZeroLegal)
+    {
         if (!(month >= 1 && month <= 12))
         {
             throw new ArgumentOutOfRangeException(nameof(month));
@@ -242,34 +181,19 @@ public class ExtendedDateTime
         {
             throw new ArgumentOutOfRangeException(nameof(day));
         }
-
-        int tempYear = year;
-        if (!_IsZerolegal && year == 0)
-        {
-            tempYear = 1;
-        }
-        Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, month, day);
+        _DateTime = new DateTime(_DefaultDateTime.Year, month, day);
     }
 
-    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second, bool isZeroLegal)
+    public ExtendedDateTime(int day, int month, int year, int hour, bool isZeroLegal) : this(day, month, year, hour, 0, 0, isZeroLegal)
     {
-        _IsZerolegal = isZeroLegal;
-        if (!(year >= int.MinValue && year <= int.MaxValue))
-        {
-            throw new ArgumentOutOfRangeException(nameof(year));
-        }
+    }
 
-        if (!(month >= 1 && month <= 12))
-        {
-            throw new ArgumentOutOfRangeException(nameof(month));
-        }
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute, bool isZeroLegal) : this(day, month, year, hour, minute, 0, isZeroLegal)
+    {
+    }
 
-        if (!(day >= 1 && day <= 31))
-        {
-            throw new ArgumentOutOfRangeException(nameof(day));
-        }
-
+    public ExtendedDateTime(int day, int month, int year, int hour, int minute, int second, bool isZeroLegal) : this(day, month , year, isZeroLegal)
+    {
         if (!(hour >= 0 && hour <= 23))
         {
             throw new ArgumentOutOfRangeException(nameof(hour));
@@ -284,14 +208,7 @@ public class ExtendedDateTime
         {
             throw new ArgumentOutOfRangeException(nameof(second));
         }
-
-        int tempYear = year;
-        if (!_IsZerolegal && year == 0)
-        {
-            tempYear = 1;
-        }
-        Year = tempYear;
-        _DateTime = new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
+        _DateTime = new DateTime(_DefaultDateTime.Year, month, day, hour, minute, second);
     }
 
     //Method
@@ -504,7 +421,7 @@ public class ExtendedDateTime
     /// <returns>The difference between year and defaultDate.year</returns>
     private int CalculateYearDeviance(int year)
     {
-        return year - _defaultDateTime.Year;
+        return year - _DefaultDateTime.Year;
     }
 
     /// <summary>
@@ -515,10 +432,10 @@ public class ExtendedDateTime
     /// <returns>A new DateOnly Struct with _defaultDate.year, month and day as values</returns>
     private DateTime ResetInteralYear(int day, int month, int hour, int minute, int second)
     {
-        return new DateTime(_defaultDateTime.Year, month, day, hour, minute, second);
+        return new DateTime(_DefaultDateTime.Year, month, day, hour, minute, second);
     }
 
-    public override string ToString()
+    public override string? ToString()
     {
         return $"Day: {Day} | Month: {Month} | Year: {Year} | Hour: {Hour} | Minute: {Minute} |Second: {Second} |Era: {Era} | Monthname: {NameOfMonth}";
     }
@@ -547,12 +464,18 @@ public class ExtendedDateTime
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(_DateTime, _IsZerolegal, Year, Month, Day, Era, NameOfMonth);
+        int preHash = HashCode.Combine(Year, Month, Day, Hour, Day, Second, Era, NameOfMonth);
+        return HashCode.Combine(_DateTime, _IsZerolegal, preHash);
     }
 
     public ExtendedDateTime Copy()
     {
         return new ExtendedDateTime(Day,Month,Year,Hour,Minute,Second,_IsZerolegal);
+    }
+
+    public object Clone()
+    {
+        return Copy();
     }
 
     public void Add(ExtendedDateTime other)
@@ -577,17 +500,12 @@ public class ExtendedDateTime
             throw new ArgumentNullException(nameof(other));
         }
 
-        AddSeconds(Negate(other.Second));
-        AddMinutes(Negate(other.Minute));
-        AddHours(Negate(other.Hour));
-        AddDays(Negate(other.Day));
-        AddHours(Negate(other.Hour));
-        AddDays(Negate(other.Day));
-    }
-
-    private int Negate(int val)
-    {
-        return val * -1;
+        AddSeconds(ExtendedMath.Negate(other.Second));
+        AddMinutes(ExtendedMath.Negate(other.Minute));
+        AddHours(ExtendedMath.Negate(other.Hour));
+        AddDays(ExtendedMath.Negate(other.Day));
+        AddHours(ExtendedMath.Negate(other.Hour));
+        AddDays(ExtendedMath.Negate(other.Day));
     }
 
     public int CompareTo(ExtendedDateTime? other)
@@ -738,6 +656,16 @@ public class ExtendedDateTime
         }
     }
 
+    public int CompareTo(object? obj)
+    {
+        if (obj is not ExtendedDateTime)
+        {
+            throw new ArgumentException("Given Object is not of Type ExtendedDateTime");
+        }
+
+        return CompareTo(obj as ExtendedDateTime);
+    }
+
     //Operators
     public static bool operator <(ExtendedDateTime left, ExtendedDateTime right)
     {
@@ -761,14 +689,6 @@ public class ExtendedDateTime
 
     public static ExtendedTimeSpan operator -(ExtendedDateTime left, ExtendedDateTime right)
     {
-        int year, month, day, hour, minute, second;
-
-        year = left.Year - right.Year;
-        month = left.Month - right.Month;
-        day = left.Day - right.Day;
-        hour = left.Hour - right.Hour;
-        minute = left.Minute - right.Minute;
-        second = left.Second - right.Second;
-        return new ExtendedTimeSpan(year, month, day, hour, minute, second);
+        return TimeSpanFactory.Create(left,right);
     }
 }

@@ -2,7 +2,7 @@
 
 public enum TimeEra
 {
-    NotInitialized = 0,
+    None = 0,
     BeforeZero,
     YearZero,
     AfterZero
