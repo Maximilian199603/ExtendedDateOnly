@@ -11,14 +11,14 @@ internal class ExtendedMath
     {
     }
 
-    public static int Modulo(int a, int b)
+    public static int Modulo(int dividend, int divisor)
     {
-        return Convert.ToInt32(DoubleModulo(a, b));
+        return Convert.ToInt32(DoubleModulo(dividend, divisor));
     }
 
-    public static double DoubleModulo(double a, double b)
+    public static double DoubleModulo(double dividend, double divisor)
     {
-        return a - b * Math.Floor(a / b);
+        return dividend - divisor * Math.Floor(dividend / divisor);
     }
 
     public static int Negate(int val)

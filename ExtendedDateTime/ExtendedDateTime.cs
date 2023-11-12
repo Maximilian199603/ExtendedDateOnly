@@ -83,38 +83,38 @@ public class ExtendedDateTime : IComparable<ExtendedDateTime>, IComparable, IEqu
         }
     }
 
-    public MonthNames NameOfMonth
+    public Month NameOfMonth
     {
         get
         {
             switch (_DateTime.Month)
             {
                 case 1:
-                    return MonthNames.January;
+                    return ExtendedDate.Month.January;
                 case 2:
-                    return MonthNames.February;
+                    return ExtendedDate.Month.February;
                 case 3:
-                    return MonthNames.March;
+                    return ExtendedDate.Month.March;
                 case 4:
-                    return MonthNames.April;
+                    return ExtendedDate.Month.April;
                 case 5:
-                    return MonthNames.May;
+                    return ExtendedDate.Month.May;
                 case 6:
-                    return MonthNames.June;
+                    return ExtendedDate.Month.June;
                 case 7:
-                    return MonthNames.July;
+                    return ExtendedDate.Month.July;
                 case 8:
-                    return MonthNames.August;
+                    return ExtendedDate.Month.August;
                 case 9:
-                    return MonthNames.September;
+                    return ExtendedDate.Month.September;
                 case 10:
-                    return MonthNames.October;
+                    return ExtendedDate.Month.October;
                 case 11:
-                    return MonthNames.November;
+                    return ExtendedDate.Month.November;
                 case 12:
-                    return MonthNames.December;
+                    return ExtendedDate.Month.December;
             }
-            return MonthNames.None;
+            return ExtendedDate.Month.None;
         }
     }
 
@@ -177,7 +177,7 @@ public class ExtendedDateTime : IComparable<ExtendedDateTime>, IComparable, IEqu
             throw new ArgumentOutOfRangeException(nameof(month));
         }
 
-        if (!(day >= 1 && day <= 31))
+        if (!(day >= 1 && day <= TimeUtils.CalculateUpperLimit(year, month)))
         {
             throw new ArgumentOutOfRangeException(nameof(day));
         }
@@ -508,6 +508,32 @@ public class ExtendedDateTime : IComparable<ExtendedDateTime>, IComparable, IEqu
         AddDays(ExtendedMath.Negate(other.Day));
     }
 
+    public ITime Add(ITime other)
+    {
+        ExtendedDateTime clone = this.Copy();
+
+        clone.AddSeconds(other.Second);
+        clone.AddMinutes(other.Minute);
+        clone.AddHours(other.Hour);
+        clone.AddDays(other.Day);
+        clone.AddMonths(other.Month);
+        clone.AddYears(other.Year);
+        return clone.Copy();
+    }
+
+    public ITime Subtract(ITime other)
+    {
+        ExtendedDateTime clone = this.Copy();
+
+        clone.AddSeconds(ExtendedMath.Negate(other.Second));
+        clone.AddMinutes(ExtendedMath.Negate(other.Minute));
+        clone.AddHours(ExtendedMath.Negate(other.Hour));
+        clone.AddDays(ExtendedMath.Negate(other.Day));
+        clone.AddMonths(ExtendedMath.Negate(other.Month));
+        clone.AddYears(ExtendedMath.Negate(other.Year));
+        return clone.Copy();
+    }
+
     public int CompareTo(ExtendedDateTime? other)
     {
         if (other == null)
@@ -689,6 +715,6 @@ public class ExtendedDateTime : IComparable<ExtendedDateTime>, IComparable, IEqu
 
     public static ExtendedTimeSpan operator -(ExtendedDateTime left, ExtendedDateTime right)
     {
-        return TimeSpanFactory.Create(left,right);
+        return TimeSpanFactory.CreateSub(left,right);
     }
 }

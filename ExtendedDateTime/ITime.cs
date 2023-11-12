@@ -21,5 +21,9 @@ public interface ITime : IComparable
 
     public TimeEra Era { get; }
 
-    public MonthNames NameOfMonth { get; }
+    public Month NameOfMonth { get; }
+
+    public ITime Add(ITime other);
+
+    public ITime Subtract(ITime other);
 }

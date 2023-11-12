@@ -6,10 +6,10 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>EdgeLordKirito,</Authors>
-    <PackageTags>Time; BCE Time; DateOnly, </PackageTags>
+    <PackageTags>Time; BCE Time; DateOnly, DateTime, TimeSpan</PackageTags>
     <PackageId>EdgeLordKirito.ExtendedDate</PackageId>
     <Title>ExtendedDate</Title>
-    <Description>A Libary that provides an Extended version of the DateOnly and DateTime Struct </Description>
+    <Description>A Libary that provides an Extended version of the DateOnly, DateTime and TimeSpan Struct </Description>
     <PackageProjectUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</PackageProjectUrl>
     <RepositoryUrl>https://github.com/EdgeLordKirito/ExtendedDateOnly</RepositoryUrl>
     <Product>ExtendedDate</Product>
@@ -19,11 +19,16 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryType>git</RepositoryType>
-    <Version>3.0.4</Version>
+    <Version>4.0.1</Version>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.SmartEnum" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup>

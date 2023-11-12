@@ -19,13 +19,13 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
 
     public TimeEra Era => TimeEra.None;
 
-    public MonthNames NameOfMonth => MonthNames.None;
+    public Month NameOfMonth => ExtendedDate.Month.None;
 
     private static readonly ExtendedTimeSpan _Zero = new ExtendedTimeSpan(0, 0, 0, 0, 0, 0);
 
-    private static readonly ExtendedTimeSpan _MaxValue = new ExtendedTimeSpan(int.MaxValue, 12, 31, 23, 59, 59);
+    private static readonly ExtendedTimeSpan _MaxValue = new ExtendedTimeSpan(int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue, int.MaxValue);
 
-    private static readonly ExtendedTimeSpan _MinValue = new ExtendedTimeSpan(int.MinValue, 0, 0, 0, 0, 0);
+    private static readonly ExtendedTimeSpan _MinValue = new ExtendedTimeSpan(int.MinValue, int.MinValue, int.MinValue, int.MinValue, int.MinValue, int.MinValue);
 
     public static ExtendedTimeSpan Zero => _Zero.Copy();
 
@@ -278,6 +278,36 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
         return $"Day: {Day} | Month: {Month} | Year: {Year} | Hour: {Hour} | Minute: {Minute} | Second: {Second}";
     }
 
+    public void Add(ExtendedTimeSpan other)
+    {
+        Year += other.Year;
+        Month += other.Month;
+        Day += other.Day;
+        Hour += other.Hour;
+        Minute += other.Minute;
+        Second += other.Second;
+    }
+
+    public void Subtract(ExtendedTimeSpan other)
+    {
+        Year -= other.Year;
+        Month -= other.Month;
+        Day -= other.Day;
+        Hour -= other.Hour;
+        Minute -= other.Minute;
+        Second -= other.Second;
+    }
+
+    public ITime Add(ITime other)
+    {
+        return TimeSpanFactory.CreateAdd(this, other);
+    }
+
+    public ITime Subtract(ITime other)
+    {
+        return TimeSpanFactory.CreateSub(this, other);
+    }
+
     public static bool operator <(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
         return left.CompareTo(right) < 0;
@@ -300,12 +330,11 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
 
     public static ExtendedTimeSpan operator -(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
-        // cast is not redundant as it calls the more generic method that subtract values from another
-        return TimeSpanFactory.Create(left as ITime, right as ITime);
+        return TimeSpanFactory.CreateSub(left, right);
     }
 
     public static ExtendedTimeSpan operator +(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
-        return TimeSpanFactory.Create(left,right);
+        return TimeSpanFactory.CreateAdd(left,right);
     }
 }

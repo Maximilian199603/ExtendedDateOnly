@@ -204,29 +204,29 @@ public class ExtendedDateOnlyUnitTests
     [Test]
     public void NameOfMonthTest()
     {
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.January));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.January));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.February));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.February));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.March));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.March));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.April));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.April));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.May));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.May));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.June));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.June));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.July));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.July));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.August));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.August));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.September));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.September));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.October));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.October));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.November));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.November));
         pos.AddMonths(1);
-        Assert.That(pos.NameOfMonth, Is.EqualTo(MonthNames.December));
+        Assert.That(pos.NameOfMonth, Is.EqualTo(Month.December));
     }
 
     [Test]

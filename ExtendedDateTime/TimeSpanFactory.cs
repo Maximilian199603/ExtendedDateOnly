@@ -8,7 +8,7 @@ public class TimeSpanFactory
     {
     }
 
-    public static ExtendedTimeSpan Create(ITime left, ITime right)
+    public static ExtendedTimeSpan CreateSub(ITime left, ITime right)
     {
         var tuple = Comparator.Compare(left,right);
         ITime larger = (ITime)tuple.larger;
@@ -26,7 +26,7 @@ public class TimeSpanFactory
         return new ExtendedTimeSpan(year, month, day, hour, minute, second);
     }
 
-    public static ExtendedTimeSpan Create(ExtendedTimeSpan left, ExtendedTimeSpan right)
+    public static ExtendedTimeSpan CreateAdd(ITime left, ITime right)
     {
         int year = left.Year + right.Year;
         int month = left.Month + right.Month;
