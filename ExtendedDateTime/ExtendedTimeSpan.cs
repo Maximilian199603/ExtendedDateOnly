@@ -319,7 +319,6 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
         return yearDays + monthDays + Day;
     }
 
-
     public static bool operator <(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {
         return left.CompareTo(right) < 0;
