@@ -17,6 +17,8 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
 
     public int Second { get; private set; }
 
+    public long TotalDays => CalculateTotalDays();
+
     public TimeEra Era => TimeEra.None;
 
     public Month NameOfMonth => ExtendedDate.Month.None;
@@ -98,6 +100,21 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
         }
 
         return Year == other.Year && Month == other.Month && Day == other.Day && Hour == other.Hour && Minute == other.Minute && Second == other.Second;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Year, Month, Day, Hour, Minute, Second, Era, NameOfMonth);
+    }
+
+    public int CompareTo(object? obj)
+    {
+        if (obj is not ExtendedTimeSpan)
+        {
+            throw new ArgumentException("Given Object is not of Type ExtendedDateOnly");
+        }
+
+        return CompareTo(obj as ExtendedTimeSpan);
     }
 
     public int CompareTo(ExtendedTimeSpan? other)
@@ -248,11 +265,6 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
         }
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Year, Month, Day, Hour, Minute, Second, Era, NameOfMonth);
-    }
-
     public ExtendedTimeSpan Copy()
     {
         return new ExtendedTimeSpan(Year,Month,Day,Hour,Minute,Second); 
@@ -261,16 +273,6 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
     public object Clone()
     {
         return Copy();
-    }
-
-    public int CompareTo(object? obj)
-    {
-        if (obj is not ExtendedTimeSpan)
-        {
-            throw new ArgumentException("Given Object is not of Type ExtendedDateOnly");
-        }
-
-        return CompareTo(obj as ExtendedTimeSpan);
     }
 
     public override string? ToString()
@@ -307,6 +309,16 @@ public class ExtendedTimeSpan : IComparable<ExtendedTimeSpan>, IComparable, IEqu
     {
         return TimeSpanFactory.CreateSub(this, other);
     }
+
+    //method that calculates the total amount of Days using TimeUtils
+    public long CalculateTotalDays()
+    {
+        long yearDays = TimeUtils.TotalDays(Year);
+        long monthDays = TimeUtils.TotalDays(Year, Month);
+
+        return yearDays + monthDays + Day;
+    }
+
 
     public static bool operator <(ExtendedTimeSpan left, ExtendedTimeSpan right)
     {

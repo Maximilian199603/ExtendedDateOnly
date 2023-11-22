@@ -13,6 +13,8 @@ internal class TimeUtilsUnitTest
     {
         Assert.Multiple(() =>
         {
+            Assert.That(TimeUtils.IsLeapYear(0), Is.True);
+
             //First Rule Test
             Assert.That(TimeUtils.IsLeapYear(2016), Is.True);
             Assert.That(TimeUtils.IsLeapYear(2020), Is.True);
@@ -79,6 +81,27 @@ internal class TimeUtilsUnitTest
             Assert.That(TimeUtils.CalculateUpperLimit(2022, 6) , Is.EqualTo(30));
             Assert.That(TimeUtils.CalculateUpperLimit(2023, 9) , Is.EqualTo(30));
             Assert.That(TimeUtils.CalculateUpperLimit(2025, 11), Is.EqualTo(30));
+        });
+    }
+
+    [Test]
+    public void TimeUtilsTotalDaysTest()
+    {
+        Assert.Multiple(() =>
+        {
+            ExtendedTimeSpan tester = new ExtendedTimeSpan(0);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(0));
+            tester = new ExtendedTimeSpan(1);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(365));
+            tester = new ExtendedTimeSpan(2);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(730));
+
+            tester = new ExtendedTimeSpan(4);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(1461));
+            tester = new ExtendedTimeSpan(4,2);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(1492));
+            tester = new ExtendedTimeSpan(4,2,29);
+            Assert.That(tester.CalculateTotalDays, Is.EqualTo(1521));
         });
     }
 }
